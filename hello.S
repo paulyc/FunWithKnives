@@ -1,11 +1,55 @@
 section	.text
-global	start
 
+static strlen
+strlen:
+	mov	rax, 0
+loop0:
+	mov	rdx, [rsi+rax]
+	test	dl, dl
+	jz	end0
+	inc	rax
+	shr	rdx, 8
+	test	dl, dl
+	jz	end0
+	inc	rax
+	shr	rdx, 8
+	test	dl, dl
+	jz	end0
+	inc	rax
+	shr	rdx, 8
+	test	dl, dl
+	jz	end0
+	inc	rax
+	shr	rdx, 8
+	test	dl, dl
+	jz	end0
+	inc	rax
+	shr	rdx, 8
+	test	dl, dl
+	jz	end0
+	inc	rax
+	shr	rdx, 8
+	test	dl, dl
+	jz	end0
+	inc	rax
+	shr	rdx, 8
+	test	dl, dl
+	jz	end0
+	inc	rax
+	jmp	loop0
+end0:
+	ret
+
+
+global	start
 start:
+	mov 	rsi, msg
+	call	strlen
+
+	mov	rdx, rax	; length
 	mov	rax, 0x02000004 ; write
 	mov	rdi, 1		; stdout
-	mov	rsi, msg
-	mov	rdx, msg.len
+	mov	rsi, msg	; address
 	syscall
 
 	mov	rax, 0x07
@@ -16,8 +60,7 @@ start:
 
 section	.data
 
-msg:	db	"Hello, world!", 10
-.len:	equ	$ - msg
+msg:	db	"Hello, world!", 0x0A, 0
 
 ; returned by cpuid when called with eax 0x07
 ; EBX
